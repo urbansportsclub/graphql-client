@@ -1,0 +1,34 @@
+{
+    "name": "onefit/graphql-client",
+    "description": "A simple graphql client",
+    "type": "library",
+    "require": {
+        "php": ">=7.2",
+        "ext-json": "^1.6",
+        "guzzlehttp/guzzle": "^6.5"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.3.0",
+        "phpunit/phpunit": "^8.4",
+        "phpstan/phpstan": "^0.12.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "OneFit\\GraphQLClient\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OneFit\\GraphQLClient\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "OneFit\\GraphQLServiceProvider"
+            ]
+        }
+    },
+    "license": "Proprietary",
+    "minimum-stability": "stable"
+}
