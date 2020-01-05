@@ -9,7 +9,6 @@ The client currently support only the bearer token for authentication
 
 Define the base url and token in your .env file. 
 GRAPHQL_url=https://some-url
-GRAPHQL_TOKEN=secret-token
 
 ```php
 //a simple mutation example
