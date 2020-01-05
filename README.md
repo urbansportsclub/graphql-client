@@ -8,7 +8,7 @@ A simple bearer graphql client using guzzel for laravel or lumen projects.
 The client currently support only the bearer token for authentication 
 
 Define the base url and token in your .env file. 
-GRAPHQL_url=https://some-url
+```GRAPHQL_url=https://some-url```
 
 ```php
 //a simple mutation example
