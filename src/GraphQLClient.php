@@ -31,10 +31,7 @@ abstract class GraphQLClient
     protected function getHeaders(): array
     {
         return  [
-            'headers' => [
                 'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ],
         ];
     }
 
@@ -58,7 +55,7 @@ abstract class GraphQLClient
     {
         try {
             $payload = $this->preparePayload($graphQlQuery, $option);
-            $response = $this->getClient()->request('POST', $this->getUrl(), array_merge($this->getHeaders(),$this->authHeaders(), $payload));
+            $response = $this->getClient()->request('POST', $this->getUrl(), array_merge(['headers' => array_merge($this->getHeaders(), $this->authHeaders())], $payload));
         } catch (\GuzzleHttp\Exception\ClientException $exception) {
             if ($exception->getCode() == Response::HTTP_BAD_REQUEST) {
                 throw new BadRequestHttpException('There is problem with the payload sent in request. '.$exception->getMessage(),
