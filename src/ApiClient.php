@@ -3,6 +3,7 @@
 namespace OneFit\GraphQLClient;
 
 use GuzzleHttp\ClientInterface;
+use Illuminate\Support\Arr;
 
 /**
  * Class ApiClient
@@ -20,12 +21,14 @@ class ApiClient extends GraphQLClient
      * ApiClient constructor.
      * @param ClientInterface $httpClient
      * @param string $baseUrl
-     * @param string $token
+     * @param array $requestOptions
      */
-    public function __construct(ClientInterface $httpClient, string $baseUrl)
+    public function __construct(ClientInterface $httpClient, string $baseUrl, array $requestOptions = [])
     {
         $this->httpClient = $httpClient;
         $this->baseUrl = $baseUrl;
+        $this->connectionTimeout = Arr::get($requestOptions,'connect_timeout', 0);
+        $this->timeout = Arr::get($requestOptions,'timeout', 0);
     }
 
     /**

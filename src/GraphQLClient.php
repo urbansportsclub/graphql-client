@@ -9,6 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
+/**
+ * Class GraphQLClient
+ * @package OneFit\GraphQLClient
+ */
 abstract class GraphQLClient
 {
     /**
@@ -24,6 +28,16 @@ abstract class GraphQLClient
      * @var array
      */
     protected $options = [];
+
+    /**
+     * total timeout of the request in seconds
+     */
+    protected $timeout = 0;
+
+    /**
+     * number of seconds to wait while trying to connect to a server
+     */
+    protected $connectionTimeout = 0;
 
     /**
      * @return array
@@ -55,7 +69,7 @@ abstract class GraphQLClient
     {
         try {
             $payload = $this->preparePayload($graphQlQuery, $option);
-            $response = $this->getClient()->request('POST', $this->getUrl(), array_merge(['headers' => array_merge($this->getHeaders(), $this->authHeaders())], $payload));
+            $response = $this->getClient()->request('POST', $this->getUrl(), $this->prepareRequestOptions(), $payload);
         } catch (\GuzzleHttp\Exception\ClientException $exception) {
             if ($exception->getCode() == Response::HTTP_BAD_REQUEST) {
                 throw new BadRequestHttpException('There is problem with the payload sent in request. '.$exception->getMessage(),
@@ -115,5 +129,17 @@ abstract class GraphQLClient
         }
 
         return [];
+    }
+
+    /**
+     * @return array
+     */
+    private function prepareRequestOptions(): array
+    {
+        $headers = ['headers' => array_merge($this->getHeaders(), $this->authHeaders())];
+        $timeout = ['timeout' => $this->timeout];
+        $connectionTimeout = ['connect_timeout' => $this->connectionTimeout];
+
+        return array_merge($headers, $timeout, $connectionTimeout);
     }
 }
