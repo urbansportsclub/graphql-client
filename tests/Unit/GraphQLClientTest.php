@@ -4,11 +4,14 @@ namespace OneFit\GraphQLClient\Tests;
 
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use OneFit\GraphQLClient\ApiClient;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -69,6 +72,16 @@ class GraphQLClientTest extends TestCase
         $client = app(ApiClient::class);
         $this->expectException(HttpException::class);
         $client->sendRequest($this->fakeQuery(), $this->fakeOptions());
+    }
+
+    /** @test */
+    public function handle_guzzle_conenction_exception()
+    {
+        $this->mock->reset();
+        $this->mock->append(new ConnectException('Timeout',
+            new Request('get','/')));
+        $this->expectException(ConnectException::class);
+        $this->graphQLClient->sendRequest($this->fakeQuery(), $this->fakeOptions());
     }
 
     private function fakeQuery(): string

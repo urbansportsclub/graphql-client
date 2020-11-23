@@ -18,7 +18,8 @@ class GraphQLClientServiceProvider extends ServiceProvider
             $client = app()->make(Client::class);
 
             return new ApiClient($client,
-                config('graphql.url')
+                config('graphql.url'),
+                [config('graphql.connect_timeout'), config('graphql.timeout')]
             );
         });
     }
