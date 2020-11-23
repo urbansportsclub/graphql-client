@@ -31,11 +31,13 @@ abstract class GraphQLClient
 
     /**
      * total timeout of the request in seconds
+     * @var float
      */
     protected $timeout = 0;
 
     /**
      * number of seconds to wait while trying to connect to a server
+     * @var float
      */
     protected $connectionTimeout = 0;
 
