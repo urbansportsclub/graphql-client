@@ -3,7 +3,8 @@
 return [
   'graphql' => [
       'url' => env('GRAPHQL_url'),
-      'connect_timeout' => env('GRAPHQL_CONNECTION_TIMEOUT'),
-      'timeout' => env('GRAPHQL_TIMEOUT'),
+      'connect_timeout' => env('GRAPHQL_CONNECTION_TIMEOUT',0),
+      'timeout' => env('GRAPHQL_TIMEOUT',0),
   ],
 ];
+
