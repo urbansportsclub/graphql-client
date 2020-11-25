@@ -71,7 +71,7 @@ abstract class GraphQLClient
     {
         try {
             $payload = $this->preparePayload($graphQlQuery, $option);
-            $response = $this->getClient()->request('POST', $this->getUrl(), $this->prepareRequestOptions(), $payload);
+            $response = $this->getClient()->request('POST', $this->getUrl(), $this->prepareRequestOptions($payload));
         } catch (\GuzzleHttp\Exception\ClientException $exception) {
             if ($exception->getCode() == Response::HTTP_BAD_REQUEST) {
                 throw new BadRequestHttpException('There is problem with the payload sent in request. '.$exception->getMessage(),
@@ -134,14 +134,15 @@ abstract class GraphQLClient
     }
 
     /**
+     * @param array $payload
      * @return array
      */
-    private function prepareRequestOptions(): array
+    private function prepareRequestOptions(array $payload): array
     {
         $headers = ['headers' => array_merge($this->getHeaders(), $this->authHeaders())];
         $timeout = ['timeout' => $this->timeout];
         $connectionTimeout = ['connect_timeout' => $this->connectionTimeout];
 
-        return array_merge($headers, $timeout, $connectionTimeout);
+        return array_merge($headers, $timeout, $connectionTimeout, $payload);
     }
 }
